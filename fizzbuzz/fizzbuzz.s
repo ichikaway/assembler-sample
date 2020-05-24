@@ -3,8 +3,24 @@
 
 main:
     mov rcx,1
+    mov r14, 0x31
 
 loop1:
+    #print
+    mov rdx, 0x1 #3 size
+
+    mov r11, rsp
+    sub r11, 0x60
+    mov [r11], r14
+    lea rsi, [r11] #2 text
+
+    mov rdi, 0x1 #1 fd
+    mov rax, 0x1
+    push rcx
+    syscall
+    pop rcx
+
+
     # count % 3
     mov rdx,0 #割られる上位
     mov rax, rcx #割られる下位
@@ -52,6 +68,7 @@ next:
     pop rcx
 
     # for loop, count up
+    add r14, 0x1
     inc rcx
     cmp rcx, 16
     je exit
