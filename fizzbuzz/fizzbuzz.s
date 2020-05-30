@@ -39,24 +39,15 @@ skip1:
     jne next
 
     #print
-    mov rdx, 0x4 #3 size
-    lea rsi, [buzz] #2 text
-    mov rdi, 0x1 #1 fd
-    mov rax, 0x1
-    push rcx
-    syscall
-    pop rcx
-
+    mov rdi, 0x04#文字数
+    lea rsi, [buzz]
+    call put
 
 next:
     #print
-    mov rdx, 0x1 #3 size
-    lea rsi, [newline] #2 text
-    mov rdi, 0x1 #1 fd
-    mov rax, 0x1
-    push rcx
-    syscall
-    pop rcx
+    mov rdi, 0x01 #文字数
+    lea rsi, [newline]
+    call put
 
     # for loop, count up
     add r14, 0x1
