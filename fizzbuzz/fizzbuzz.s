@@ -5,21 +5,15 @@ main:
     mov rcx,1
     mov r14, 0x31
 
+
 loop1:
     #print
     mov rdx, 0x1 #3 size
 
-    mov r11, rsp
-    sub r11, 0x60
-    mov [r11], r14
-    lea rsi, [r11] #2 text
-
-    mov rdi, 0x1 #1 fd
-    mov rax, 0x1
-    push rcx
-    syscall
-    pop rcx
-
+    mov [rsp-0x70], r14
+    mov rsi, rsp
+    sub rsi, 0x70
+    call put
 
     # count % 3
     mov rdx,0 #割られる上位
@@ -85,3 +79,21 @@ buzz:
     .ascii "buzz"
 newline:
     .ascii "\n"
+
+put:
+    push rbp
+    mov rbp, rsp
+
+    #print
+    mov rdx, 0x1 #3 size
+    #mov [rsp-0x70], rsi
+    #lea rsi, [rsp-0x70] #2 text
+    #lea rsi, [rsp-0x70] #2 text
+    mov rdi, 0x1 #1 fd
+    mov rax, 0x1
+    push rcx
+    syscall
+    pop rcx
+
+    mov rsp, rbp
+    pop rbp
