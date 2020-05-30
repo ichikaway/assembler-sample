@@ -10,6 +10,7 @@ loop1:
     #print
     mov rdx, 0x1 #3 size
 
+    mov rdi, 0x01#文字数
     mov [rsp-0x70], r14
     mov rsi, rsp
     sub rsi, 0x70
@@ -24,13 +25,9 @@ loop1:
     jne skip1
 
     #print
-    mov rdx, 0x4 #3 size
-    lea rsi, [fizz] #2 text
-    mov rdi, 0x1 #1 fd
-    mov rax, 0x1
-    push rcx
-    syscall
-    pop rcx
+    mov rdi, 0x04#文字数
+    lea rsi, [fizz]
+    call put
 
 skip1:
     # count % 5
@@ -85,7 +82,7 @@ put:
     mov rbp, rsp
 
     #print
-    mov rdx, 0x1 #3 size
+    mov rdx, rdi #3 size
     #mov [rsp-0x70], rsi
     #lea rsi, [rsp-0x70] #2 text
     #lea rsi, [rsp-0x70] #2 text
