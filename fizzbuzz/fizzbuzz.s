@@ -11,9 +11,9 @@ loop1:
     mov rdx, 0x1 #3 size
 
     mov rdi, 0x01#文字数
-    mov [rsp-0x70], r14
     mov rsi, rsp
-    sub rsi, 0x70
+    sub rsi, 0x70 #rsp-0x70のアドレスをrsiにセット
+    mov [rsi], r14 #rsiのアドレスの参照先にカウンタr14の値をセット
     call put
 
     # count % 3
