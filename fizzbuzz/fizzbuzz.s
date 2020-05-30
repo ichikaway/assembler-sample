@@ -74,8 +74,7 @@ put:
 
     #print
     mov rdx, rdi #3 size
-    #mov [rsp-0x70], rsi
-    #lea rsi, [rsp-0x70] #2 text
+    # write syscall 第2引数rsiはputの呼び出しの第2引数で指定されているのでここでは指定しない
     #lea rsi, [rsp-0x70] #2 text
     mov rdi, 0x1 #1 fd
     mov rax, 0x1
