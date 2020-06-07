@@ -1,20 +1,18 @@
 .intel_syntax noprefix
 .global main
 
+.data
+str:
+  .ascii "000"
+
+.text
 main:
     mov rcx,1
     mov r14, 0x31
 
-
 loop1:
-    #print
-    mov rdx, 0x1 #3 size
 
-    mov rdi, 0x01#文字数
-    mov rsi, rsp
-    sub rsi, 0x70 #rsp-0x70のアドレスをrsiにセット
-    mov [rsi], r14 #rsiのアドレスの参照先にカウンタr14の値をセット
-    call put
+    call echocount
 
     # count % 3
     mov rdx,0 #割られる上位
@@ -67,6 +65,24 @@ buzz:
     .ascii "buzz"
 newline:
     .ascii "\n"
+
+echocount:
+    push rbp
+    mov rbp, rsp
+
+    #mov rdi, 0x01#文字数
+    #mov rsi, rsp
+    #sub rsi, 0x70 #rsp-0x70のアドレスをrsiにセット
+    #mov [rsi], r14 #rsiのアドレスの参照先にカウンタr14の値をセット
+    #call put
+
+    mov rdi, 0x02 #文字数
+    lea rsi, [str]
+    call put
+
+    mov rsp, rbp
+    pop rbp
+    ret
 
 put:
     push rbp
