@@ -19,7 +19,7 @@ loop1:
     mov rax, rcx #割られる下位
     mov r15, 3 #割る数
     div r15
-    cmp rdx, 0 #余りがrdx, 答えrax
+    cmp rdx, 0 #余りがrdx, 商rax
     jne skip1
 
     #print
@@ -33,7 +33,7 @@ skip1:
     mov rax, rcx #割られる下位
     mov r15, 5 #割る数
     div r15
-    cmp rdx, 0 #余りがrdx, 答えrax
+    cmp rdx, 0 #余りがrdx, 商rax
     jne next
 
     #print
