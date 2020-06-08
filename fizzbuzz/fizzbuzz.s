@@ -8,7 +8,6 @@ str:
 .text
 main:
     mov rcx,1
-    mov r14, 0x31
 
 loop1:
 
@@ -48,7 +47,6 @@ next:
     call put
 
     # for loop, count up
-    add r14, 0x1
     inc rcx
     cmp rcx, 16
     je exit
@@ -101,7 +99,6 @@ echocount:
 
     #print
     mov rdi, r13 #文字数
-    #mov [str], r12
     lea rsi, [str]
     call put
 
