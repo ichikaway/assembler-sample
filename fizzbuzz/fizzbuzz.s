@@ -76,7 +76,7 @@ echocount:
     push [nullbyte]
     mov r11, rcx
 
-echocount_div_again:
+    echocount_div_again:
     # カウンタの数字の下位の桁から数字文字列変換してスタックに積む
     inc r13
     mov rdx,0 #割られる上位
@@ -91,11 +91,17 @@ echocount_div_again:
     jne echocount_div_again
 
     # nullbyteがくるまでpopして数字を文字列に変換してstr変数のアドレスにいれていく
+    mov r10, 0
+    echocount_pop_loop:
     pop r12
-    #cmp r12, 0
+    mov [str+r10], r12
+    inc r10
+    cmp r12, [nullbyte]
+    jne echocount_pop_loop
 
+    #print
     mov rdi, r13 #文字数
-    mov [str], r12
+    #mov [str], r12
     lea rsi, [str]
     call put
 
