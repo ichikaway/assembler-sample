@@ -74,6 +74,9 @@ echocount:
     push [nullbyte]
     mov r11, rcx
 
+    call allocate
+    mov r15, rax
+
     echocount_div_again:
     # カウンタの数字の下位の桁から数字文字列変換してスタックに積む
     inc r13
@@ -106,6 +109,22 @@ echocount:
     pop rbp
     ret
 
+allocate:
+    push rbp
+    mov rbp, rsp
+
+    mov rdi, 0x10
+    mov rax, 12 #sys_brk
+    push rcx
+    push r11
+    syscall
+    pop r11
+    pop rcx
+
+    mov rsp, rbp
+    pop rbp
+    ret
+
 put:
     push rbp
     mov rbp, rsp
@@ -122,3 +141,4 @@ put:
 
     mov rsp, rbp
     pop rbp
+
