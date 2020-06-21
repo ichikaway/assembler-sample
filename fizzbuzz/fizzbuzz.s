@@ -72,8 +72,6 @@ echocount:
     push [nullbyte]
     mov r11, rcx
 
-    call allocate
-    mov r15, rax
 
     echocount_div_again:
     # カウンタの数字の下位の桁から数字文字列変換してスタックに積む
@@ -89,8 +87,11 @@ echocount:
     # 商がゼロでなければまだ桁が残っているためループする
     jne echocount_div_again
 
-    # nullbyteがくるまでpopして数字を文字列に変換してstr変数のアドレスにいれていく
+    # nullbyteがくるまでpopして数字を文字列に変換してヒープのアドレスにいれていく
     mov r10, 0
+    mov rdi, r13 #文字数をrdiに入れてallocateで文字数分のメモリ確保
+    call allocate
+    mov r15, rax
     echocount_pop_loop:
     pop r12
     mov [r15+r10], r12
@@ -110,29 +111,28 @@ echocount:
 allocate:
     push rbp
     mov rbp, rsp
+    push rcx
+    push r11
+
+    push rdi #allocate呼び出し時の文字数
 
     # brk(0)でヒープの先頭アドレスを取得
     mov rdi, 0x00
     mov rax, 12 #sys_brk
-    push rcx
-    push r11
     syscall
-    pop r11
-    pop rcx
 
     # ヒープの先頭アドレスraxをスタックに入れてreturn前にraxに入れる
-    # ヒープの先頭アドレスから１６バイト分、brkでメモリ確保
+    # ヒープの先頭アドレスから文字数分、brkでメモリ確保
+    pop rdi
     push rax
-    add rax, 0x10
+    add rax, rdi
     mov rdi, rax
     mov rax, 12 #sys_brk
-    push rcx
-    push r11
     syscall
-    pop r11
-    pop rcx
     pop rax
 
+    pop r11
+    pop rcx
     mov rsp, rbp
     pop rbp
     ret
