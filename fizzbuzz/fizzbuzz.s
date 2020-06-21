@@ -2,8 +2,6 @@
 .global main
 
 .data
-str:
-  .ascii "000"
 
 .text
 main:
@@ -95,14 +93,14 @@ echocount:
     mov r10, 0
     echocount_pop_loop:
     pop r12
-    mov [str+r10], r12
+    mov [r15+r10], r12
     inc r10
     cmp r12, [nullbyte]
     jne echocount_pop_loop
 
     #print
     mov rdi, r13 #文字数
-    lea rsi, [str]
+    lea rsi, [r15]
     call put
 
     mov rsp, rbp
@@ -113,13 +111,27 @@ allocate:
     push rbp
     mov rbp, rsp
 
-    mov rdi, 0x10
+    # brk(0)でヒープの先頭アドレスを取得
+    mov rdi, 0x00
     mov rax, 12 #sys_brk
     push rcx
     push r11
     syscall
     pop r11
     pop rcx
+
+    # ヒープの先頭アドレスraxをスタックに入れてreturn前にraxに入れる
+    # ヒープの先頭アドレスから１６バイト分、brkでメモリ確保
+    push rax
+    add rax, 0x10
+    mov rdi, rax
+    mov rax, 12 #sys_brk
+    push rcx
+    push r11
+    syscall
+    pop r11
+    pop rcx
+    pop rax
 
     mov rsp, rbp
     pop rbp
