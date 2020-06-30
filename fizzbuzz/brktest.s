@@ -45,8 +45,9 @@ allocate:
     mov [r13+1], r14
     mov r14, 0x33
     mov [r13+2], r14
-    mov [r13+4080], r14 #ここまで書き込める
-    mov [r13+4081], r14 #ここからsegmentation fault
+    #mov [r13+4080], r14
+    mov [r13+4088], r14 #ここまで書き込み可能
+    #mov [r13+4090], r14 #ここからsegmentation fault
 
     # 一度確保した領域にもう一度brkすると正常終了するようにみえる、なぜ？
     sub r12, 0x04
